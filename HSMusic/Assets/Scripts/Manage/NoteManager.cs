@@ -8,7 +8,6 @@ public class NoteManager : MonoBehaviour
     public int bpm = 0;
     double currentTime = 0d;
     public Transform tfNoteAppear = null;
-    public GameObject goNote = null;
 
     TimingManager theTimingManager;
     EffectManager theEffectManager;
@@ -25,8 +24,9 @@ public class NoteManager : MonoBehaviour
         currentTime += Time.deltaTime;
         if(currentTime>=60d/bpm)
         {
-            GameObject t_note = Instantiate(goNote, tfNoteAppear.position, Quaternion.identity);
-            t_note.transform.SetParent(this.transform);
+            GameObject t_note = ObjectPool.instance.noteQueue.Dequeue();
+            t_note.transform.position = tfNoteAppear.position;
+            t_note.SetActive(true);
             theTimingManager.boxNoteList.Add(t_note);
             currentTime -= 60d / bpm;
 
@@ -41,7 +41,10 @@ public class NoteManager : MonoBehaviour
             if(collision.GetComponent<Note>().GetNoteFlag())
                 theEffectManager.JudgementEffect(4);
             theTimingManager.boxNoteList.Remove(collision.gameObject);
-            Destroy(collision.gameObject);
+
+            ObjectPool.instance.noteQueue.Enqueue(collision.gameObject);
+            collision.gameObject.SetActive(false);
+            
         }
     }
 

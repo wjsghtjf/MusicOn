@@ -6,6 +6,14 @@ public class Note : MonoBehaviour
 {
     public float noteSpeed = 400;
     Image noteImage;
+
+    private void OnEnable()
+    {
+        if (noteImage == null)
+            noteImage = GetComponent<Image>();
+        noteImage.enabled = true;
+    }
+
     private void Start()
     {
         noteImage = GetComponent<Image>();
