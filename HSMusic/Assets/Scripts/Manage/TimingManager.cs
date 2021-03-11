@@ -8,10 +8,15 @@ public class TimingManager : MonoBehaviour
     public Transform Center = null;
     public RectTransform[] timingRect = null;
     Vector2[] timingBoxs = null;
+
+    //타이밍에 이펙트 발생
+    EffectManager theEffect;
     
     // Start is called before the first frame update
     void Start()
     {
+        theEffect = FindObjectOfType<EffectManager>();
+
         //타이밍 박스 생성
         timingBoxs = new Vector2[timingRect.Length];
         for(int i=0;i<timingRect.Length;i++)
@@ -33,14 +38,18 @@ public class TimingManager : MonoBehaviour
                 {
                     boxNoteList[i].GetComponent<Note>().HideNote();
                     boxNoteList.RemoveAt(i);
-                    Debug.Log("hit" + x);
+                    theEffect.JudgementEffect(x);
+
+                    if(x<3)
+                        theEffect.NoteHitEffect();
+
                     return;
                 }
 
             }
 
         }
-        Debug.Log("Miss");
+        theEffect.JudgementEffect(4);
         return;
     }
 }

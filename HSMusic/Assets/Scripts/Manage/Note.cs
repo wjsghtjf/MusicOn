@@ -19,4 +19,11 @@ public class Note : MonoBehaviour
     {
         transform.localPosition += Vector3.right * noteSpeed * Time.deltaTime;
     }
+
+    public bool GetNoteFlag()
+    {
+
+        return noteImage.enabled;
+
+    }
 }

@@ -9,11 +9,14 @@ public class NoteManager : MonoBehaviour
     double currentTime = 0d;
     public Transform tfNoteAppear = null;
     public GameObject goNote = null;
+
     TimingManager theTimingManager;
+    EffectManager theEffectManager;
 
     private void Start()
     {
-        theTimingManager = GetComponent<TimingManager>();        
+        theTimingManager = GetComponent<TimingManager>();
+        theEffectManager = FindObjectOfType<EffectManager>();
     }
 
 
@@ -34,6 +37,9 @@ public class NoteManager : MonoBehaviour
     {
         if(collision.CompareTag("Note"))
         {
+            //노트를 앞에서는 이미지만 삭제하기때문. 이미지가 켜진상태로 오면 틀린것. 꺼진상태로오면 맞춘것 
+            if(collision.GetComponent<Note>().GetNoteFlag())
+                theEffectManager.JudgementEffect(4);
             theTimingManager.boxNoteList.Remove(collision.gameObject);
             Destroy(collision.gameObject);
         }
