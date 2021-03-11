@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class NoteManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+  
     public int bpm = 0;
     double currentTime = 0d;
     public Transform tfNoteAppear = null;
     public GameObject goNote = null;
- 
-    // Update is called once per frame
+    TimingManager theTimingManager;
+
+    private void Start()
+    {
+        theTimingManager = GetComponent<TimingManager>();        
+    }
+
+
     void Update()
     {
         currentTime += Time.deltaTime;
@@ -18,6 +24,7 @@ public class NoteManager : MonoBehaviour
         {
             GameObject t_note = Instantiate(goNote, tfNoteAppear.position, Quaternion.identity);
             t_note.transform.SetParent(this.transform);
+            theTimingManager.boxNoteList.Add(t_note);
             currentTime -= 60d / bpm;
 
         }
@@ -27,6 +34,7 @@ public class NoteManager : MonoBehaviour
     {
         if(collision.CompareTag("Note"))
         {
+            theTimingManager.boxNoteList.Remove(collision.gameObject);
             Destroy(collision.gameObject);
         }
     }
