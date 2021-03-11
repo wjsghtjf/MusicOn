@@ -11,11 +11,15 @@ public class TimingManager : MonoBehaviour
 
     //타이밍에 이펙트 발생
     EffectManager theEffect;
-    
+    ComboManager theComboManager;
+    ScoreManager theScoreManager;
+
     // Start is called before the first frame update
     void Start()
     {
         theEffect = FindObjectOfType<EffectManager>();
+        theScoreManager = FindObjectOfType<ScoreManager>();
+        theComboManager = FindObjectOfType<ComboManager>();
 
         //타이밍 박스 생성
         timingBoxs = new Vector2[timingRect.Length];
@@ -36,12 +40,18 @@ public class TimingManager : MonoBehaviour
             {
                 if (timingBoxs[x].x <= t_notePosX && t_notePosX <= timingBoxs[x].y)
                 {
+                    //노트제거
                     boxNoteList[i].GetComponent<Note>().HideNote();
                     boxNoteList.RemoveAt(i);
-                    theEffect.JudgementEffect(x);
-
+                   
+                    //이펙트 연출
                     if(x<3)
                         theEffect.NoteHitEffect();
+                    theEffect.JudgementEffect(x);
+
+                    //점수 증가
+                    theScoreManager.IncreaseScore(x);
+
 
                     return;
                 }
@@ -49,6 +59,7 @@ public class TimingManager : MonoBehaviour
             }
 
         }
+        theComboManager.ResetCombo();
         theEffect.JudgementEffect(4);
         return;
     }
