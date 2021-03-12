@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     //이동
     public float moveSpeed = 3;
     Vector3 dir = new Vector3();
-    Vector3 destPos = new Vector3();
+    public Vector3 destPos = new Vector3();
 
     //큐브 회전
     public float spinSpeed = 270;
@@ -23,11 +23,13 @@ public class PlayerController : MonoBehaviour
 
     //기타
     TimingManager theTimingManager;
+    CameraController theCam;
 
     // Start is called before the first frame update
     private void Start()
     {
         theTimingManager = FindObjectOfType<TimingManager>();
+        theCam = FindObjectOfType<CameraController>();
     }
 
     // Update is called once per frame
@@ -36,18 +38,22 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.A)|| Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.W))
         {
             //판정 체크
-            if(canMove&&theTimingManager.CheckTiming())
+            if (canMove)
             {
-                StartAction();
-        
+                Calc();
+                if (theTimingManager.CheckTiming())
+                {
+                    StartAction();
+
+                }
             }
         }
     }
 
-    void StartAction()
+    void Calc()
     {
         //방향 계산
-        dir.Set(Input.GetAxisRaw("Vertical"),0,Input.GetAxisRaw("Horizontal"));
+        dir.Set(Input.GetAxisRaw("Vertical"), 0, Input.GetAxisRaw("Horizontal"));
 
         //이동 목표값 계산
         destPos = transform.position + new Vector3(-dir.x, 0, dir.z);
@@ -57,9 +63,17 @@ public class PlayerController : MonoBehaviour
         fakeCube.RotateAround(transform.position, rotDir, spinSpeed);
         destRot = fakeCube.rotation;
 
+
+    }
+
+
+    void StartAction()
+    {
+       
         StartCoroutine(MoveCo());
         StartCoroutine(SpinCo());
         StartCoroutine(RecoilCo());
+        StartCoroutine(theCam.ZoomCam());
     }
 
     IEnumerator MoveCo()
