@@ -31,7 +31,7 @@ public class TimingManager : MonoBehaviour
 
     }
     
-    public void  CheckTiming()
+    public bool  CheckTiming()
     {
         for(int i=0;i<boxNoteList.Count;i++)
         {
@@ -53,7 +53,7 @@ public class TimingManager : MonoBehaviour
                     theScoreManager.IncreaseScore(x);
 
 
-                    return;
+                    return true;
                 }
 
             }
@@ -61,6 +61,6 @@ public class TimingManager : MonoBehaviour
         }
         theComboManager.ResetCombo();
         theEffect.JudgementEffect(4);
-        return;
+        return false;
     }
 }

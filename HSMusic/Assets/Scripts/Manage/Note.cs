@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Note : MonoBehaviour
 {
-    public float noteSpeed = 400;
+    public float noteSpeed = 800;
     Image noteImage;
 
     private void OnEnable()
