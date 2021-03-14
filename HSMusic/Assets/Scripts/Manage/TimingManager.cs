@@ -9,12 +9,16 @@ public class TimingManager : MonoBehaviour
     public RectTransform[] timingRect = null;
     Vector2[] timingBoxs = null;
 
+    //결과창
+    int[] judgementRecord = new int[5];
+
     //타이밍에 이펙트 발생
     EffectManager theEffect;
     ComboManager theComboManager;
     ScoreManager theScoreManager;
     StageManager theStageManager;
     PlayerController thePlayer;
+   
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +28,7 @@ public class TimingManager : MonoBehaviour
         theComboManager = FindObjectOfType<ComboManager>();
         theStageManager = FindObjectOfType<StageManager>();
         thePlayer = FindObjectOfType<PlayerController>();
-
+    
         //타이밍 박스 생성
         timingBoxs = new Vector2[timingRect.Length];
         for(int i=0;i<timingRect.Length;i++)
@@ -58,6 +62,7 @@ public class TimingManager : MonoBehaviour
                         theScoreManager.IncreaseScore(x);
                         theStageManager.ShowNextPlate(); //판때기 등장
                         theEffect.JudgementEffect(x); //판정연츨
+                        judgementRecord[x]++; //판정기록
                     }
                     else // 밟은판때기 밟음
                     {
@@ -73,6 +78,7 @@ public class TimingManager : MonoBehaviour
         }
         theComboManager.ResetCombo();
         theEffect.JudgementEffect(4);
+        MissRecord();
         return false;
     }
 
@@ -92,6 +98,17 @@ public class TimingManager : MonoBehaviour
         }
         return false;
 
+    }
+
+    public int[] GetJudgementRecord()
+    {
+        return judgementRecord;
+    }
+
+
+    public void MissRecord()
+    {
+       judgementRecord[4]++;
     }
 
 }

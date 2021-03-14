@@ -46,4 +46,10 @@ public class ScoreManager : MonoBehaviour
         //애니 실행
         myAnim.SetTrigger(animScoreUp);
     }
+
+    public int GetCurrentScore()
+    {
+        return currentScore;
+    }
+
 }

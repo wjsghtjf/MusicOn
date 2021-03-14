@@ -8,6 +8,7 @@ public class ComboManager : MonoBehaviour
     public Text txtCombo = null;
 
     int currentCombo = 0;
+    int maxCombo = 0;
 
     Animator myAnim;
     string animComboUp = "ComboUp";
@@ -23,6 +24,8 @@ public class ComboManager : MonoBehaviour
     public void IncreaseCombo(int p_num=1)
     {
         currentCombo += p_num;
+        if (currentCombo > maxCombo)
+            maxCombo = currentCombo;
         txtCombo.text = string.Format("{0:#,##0}", currentCombo);
         if(currentCombo>2)
         {
@@ -46,6 +49,12 @@ public class ComboManager : MonoBehaviour
     {
 
         return currentCombo;
+    }
+
+    public int GetMaxCombo()
+    {
+
+        return maxCombo;
     }
 
 

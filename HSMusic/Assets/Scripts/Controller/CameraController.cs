@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
     Vector3 playerDistance = new Vector3();
 
     float hitDistance = 0;
-    public float zoomDistance = -2.5f;
+    public float zoomDistance = -1.5f;
     
     // Start is called before the first frame update
     void Start()

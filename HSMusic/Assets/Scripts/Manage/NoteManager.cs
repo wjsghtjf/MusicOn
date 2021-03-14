@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class NoteManager : MonoBehaviour
 {
-  
-    public int bpm = 0;
+    bool noteActive = true;
+
+    public double bpm = 0;
     double currentTime = 0d;
     public Transform tfNoteAppear = null;
+    
+
 
     TimingManager theTimingManager;
     EffectManager theEffectManager;
@@ -23,15 +26,18 @@ public class NoteManager : MonoBehaviour
 
     void Update()
     {
-        currentTime += Time.deltaTime;
-        if(currentTime>=60d/bpm)
+        if (noteActive)
         {
-            GameObject t_note = ObjectPool.instance.noteQueue.Dequeue();
-            t_note.transform.position = tfNoteAppear.position;
-            t_note.SetActive(true);
-            theTimingManager.boxNoteList.Add(t_note);
-            currentTime -= 60d / bpm;
+            currentTime += Time.deltaTime;
+            if (currentTime >= 60d /bpm)
+            {
+                GameObject t_note = ObjectPool.instance.noteQueue.Dequeue();
+                t_note.transform.position = tfNoteAppear.position;
+                t_note.SetActive(true);
+                theTimingManager.boxNoteList.Add(t_note);
+                currentTime -= 60d / bpm;
 
+            }
         }
     }
 
@@ -44,6 +50,7 @@ public class NoteManager : MonoBehaviour
             {
                 theComboManager.ResetCombo();
                 theEffectManager.JudgementEffect(4);
+                theTimingManager.MissRecord();
             }
             theTimingManager.boxNoteList.Remove(collision.gameObject);
 
@@ -52,5 +59,19 @@ public class NoteManager : MonoBehaviour
             
         }
     }
+
+    public void RemoveNote()
+    {
+        noteActive = false;
+        for(int i=0;i<theTimingManager.boxNoteList.Count;i++)
+        {
+            theTimingManager.boxNoteList[i].SetActive(false);
+            ObjectPool.instance.noteQueue.Enqueue(theTimingManager.boxNoteList[i]);
+
+        }
+
+    }
+
+
 
 }
