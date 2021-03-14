@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class SpeedPlate : MonoBehaviour
 {
-    public double speed = 1;
+    public float speed = 1;
+    public bool CubeSpeedUp = false;
     NoteManager noteManager;
     BoxCollider boxCol;
+    PlayerController thePlayer;
     private void Start()
     {
         noteManager = FindObjectOfType<NoteManager>();
         boxCol = GetComponent<BoxCollider>();
+        thePlayer = FindObjectOfType<PlayerController>();
         boxCol.size = new Vector3(0.8f, 1f, 0.8f);
 
     }
@@ -22,6 +25,11 @@ public class SpeedPlate : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             noteManager.bpm *= speed;
+            if(CubeSpeedUp)
+            {
+                thePlayer.moveSpeed *= speed;
+                thePlayer.recoilPosY *= (1/speed);
+            }
         }
 
     }

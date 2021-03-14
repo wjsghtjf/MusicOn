@@ -28,7 +28,6 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     public void ShowNextPlate()
     {
         if (stepCount < totalPlateCount)
